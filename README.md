@@ -6,7 +6,7 @@ Subject:
 Educational flow of students in the Netherlands
 
 Research question:
-Is there intellectual segregation on a geographical level?
+Is there educational segregation on a geographical level?
 
 Collaborators:
 Ysbrand Galama
