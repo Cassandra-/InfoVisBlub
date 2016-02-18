@@ -9,8 +9,4 @@ Research question:
 Is there educational segregation on a geographical level?
 
 Collaborators:
-Ysbrand Galama
-Maarten de Jonge
-Cassandra Loor
-Eltjona Qato
-Marysia Winkels
+Ysbrand Galama, Maarten de Jonge, Cassandra Loor, Eltjona Qato, Marysia Winkels
