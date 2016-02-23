@@ -169,7 +169,9 @@ def main():
 	t1 = time()
 	DATA = build_database()
 	t1 = time() - t1
-	writenow('\n',t1,' ',len(DATA),'\n')
+	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
+	writenow(len(DATA(ftype='vwo')),'did vwo of which',len(DATA(ftype='vwo',ttype='wo')),'went to wo\n')
+	writenow('all keys of type are:',DATA(False,'type'))
 	
 if __name__ == '__main__':
 	main()
