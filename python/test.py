@@ -63,35 +63,25 @@ class StudentDict:
 	def __iadd__(self,other):
 		return self.__add__(other)
 	
-	def __getitem__(self,keys):
-		if type(keys) != tuple:
-			keys = (keys,)
-		if False not in keys:
+	def __call__(self,*args,**kwargs):
+		if False not in args:
 			tot = set(range(0,len(self._data)))
-			for key in keys:
-				if key:
-					try:
-						if type(key) == str:
-							tmp = set(self._indexes[key].keys())
-						elif key.step is None:
-							tmp = self._indexes[key.start].get(key.stop,set())
-						else:
-							tmp = self._indexes[key.start+key.stop].get(key.step,set())
-						tot &= tmp
-					except: writenow('no key',key); nl()
+			for key,value in kwargs.iteritems():
+				try:
+					tmp = self._indexes[key].get(value,set())
+					tot &= tmp
+				except: writenow('no key',key); nl()
 		else:
 			tot = set()
-			for key in keys:
+			for key in args:
 				if key:
-					try:
-						if type(key) == str:
-							tmp = set(self._indexes[key].keys())
-						elif not key.step:
-							tmp = self._indexes[key.start].get(key.stop,set())
-						else:
-							tmp = self._indexes[key.start+key.stop].get(key.step,set())
-						tot |= tmp
-					except: writenow('no key',key); nl()
+					tmp = set(self._indexes[key].keys())
+					tot |= tmp
+			for key,value in kwargs.iteritems():
+				try:
+					tmp = self._indexes[key].get(value,set())
+					tot |= tmp
+				except: writenow('no key',key); nl()
 		return [(self._data[i] if type(i) == int else i) for i in tot]
 
 class Student:
