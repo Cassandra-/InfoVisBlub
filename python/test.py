@@ -171,6 +171,10 @@ def build_database():
 @app.route('/count/<ftype>')
 def count(ftype):
     return str(len(DATA(ftype=ftype)))
+
+@app.route('/from/<ftype>/to/<ttype>')
+def from_to(ftype, ttype):
+    return str(len(DATA(ftype=ftype, ttype=ttype)))
 	
 def main():
 	t1 = time()
