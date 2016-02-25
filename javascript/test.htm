@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+	<style>
+		#chart {
+		  height: 500px;
+		}
+
+		.node rect {
+		  cursor: move;
+		  fill-opacity: .9;
+		  shape-rendering: crispEdges;
+		}
+
+		.node text {
+		  pointer-events: none;
+		  text-shadow: 0 1px 0 #fff;
+		}
+
+		.link {
+		  fill: none;
+		  stroke: #000;
+		  stroke-opacity: .2;
+		}
+
+		.link:hover {
+		  stroke-opacity: .5;
+		}
+	</style>
+	
+	</head>
+
+	<body>
+		<div id="chart"></div>
+		<input type="text" id="query_input" value="" style="width:1000px">
+		<button onclick="update()">Update</button>
+		<script src="../javascript/d3.min.js"></script>
+		<script src="../javascript/sankey.js"></script>
+		<script src="../javascript/sanktest.js"></script>
+		<script>
+			/*var body = d3.select("body")
+			var svg = body.append("svg")
+							.attr("width",200)
+							.attr("height",200)
+							.style("border", "1px solid black");//*/
+			
+			var update = function () {
+				var xhttp = new XMLHttpRequest();
+				var query = document.getElementById("query_input").value
+				if (query != "" && false) {
+					xhttp.open("GET", "http://127.0.0.1:5000/test3/"+query , false);
+				} else {
+					xhttp.open("GET", "http://127.0.0.1:5000/test2" , false);
+				}
+				xhttp.send()
+				var data = JSON.parse(xhttp.responseText)
+				make_sankey(data)
+			};
+		</script>
+	</body>
+</html>
