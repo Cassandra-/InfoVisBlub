@@ -1,0 +1,196 @@
+"TableInfos"
+"ID";"Title";"ShortTitle";"Identifier";"Summary";"Modified";"ReasonDelivery";"ExplanatoryText";"Language";"Catalog";"Frequency";"Period";"ShortDescription";"Description";"DefaultPresentation";"DefaultSelection";"GraphTypes";"OutputStatus";"MetaDataModified";"SearchPriority"
+"0";"Religieuze betrokkenheid; kerkelijke gezindte; regio";"Religieuze betrokkenheid; regio";"83288NED";"religie, kerkelijke gezindte, bezoek religieuze dienst, regio
+religieuze betrokkenheid, regio, landsdeel, provincie";"2015-12-23T06:00:00";"Nieuw";"";"nl";"CBS";"Perjaar";"2010-2014";"
+De tabel geeft een overzicht van de veranderingen in het percentage mensen in Nederland vanaf 15 jaar dat zich tot een bepaalde kerkelijke gezindte rekent. De volgende categorieën religie worden daarbij onderscheiden: geen kerkelijke gezindte, totaal kerkelijke gezindte, Rooms-Katholiek, Protestantse Kerk in Nederland, Nederlands Hervormd, Gereformeerd, Islam en overige gezindte. Ook wordt het percentage mensen vanaf 15 jaar weergegeven dat naar een religieuze bijeenkomst gaat. Kerkelijke gezindte en bezoek religieuze dienst worden opgesplitst naar landsdeel en provincie.
+
+Gegevens beschikbaar vanaf: 2010
+
+Status van de cijfers:
+De cijfers in deze tabel zijn definitief.
+
+Wijzigingen per 23 december 2015: 
+Geen, dit is een nieuwe tabel.
+
+Wanneer komen er nieuwe cijfers? 
+Tweede kwartaal 2016.
+";"INHOUDSOPGAVE
+
+1. Toelichting
+2. Definities en verklaring van symbolen
+3. Koppelingen naar relevante tabellen en artikelen
+4. Bronnen en methoden
+5. Meer informatie 
+
+1. TOELICHTING
+
+De tabel geeft een overzicht van de veranderingen in het percentage mensen in Nederland vanaf 15 jaar dat zich tot een bepaalde kerkelijke gezindte rekent. De volgende categorieën religie worden daarbij onderscheiden: geen kerkelijke gezindte, totaal kerkelijke gezindte, Rooms-Katholiek, Protestantse Kerk in Nederland, Nederlands Hervormd, Gereformeerd, Islam en overige gezindte. Ook wordt het percentage mensen vanaf 15 jaar weergegeven dat naar een religieuze bijeenkomst gaat. Kerkelijke gezindte en bezoek religieuze dienst worden opgesplitst naar landsdeel en provincie.
+
+Gegevens beschikbaar vanaf: 2010
+
+Status van de cijfers:
+De cijfers in deze tabel zijn definitief.
+
+Wijzigingen per 23 december 2015: 
+Geen, dit is een nieuwe tabel.
+
+Wanneer komen er nieuwe cijfers? 
+Tweede kwartaal 2016.
+
+2. DEFINITIES EN VERKLARING VAN SYMBOLEN
+
+Definities:
+Kerkelijke gezindte: 
+Kerkelijke gezindte heeft betrekking op de vraag tot welke kerkelijke gezindte of levensbeschouwelijke groepering men zichzelf rekent. 
+
+Bezoek religieuze dienst: 
+Bezoek religieuze dienst heeft betrekking op het bezoeken van bijeenkomsten met een godsdienstig of levensbeschouwelijk doel. Het betreft hier het totale percentage van de bevolking.
+
+Verklaring van symbolen:
+
+niets (blanco)	: het cijfer kan op logische gronden niet voorkomen
+. 		: het cijfer is onbekend, onvoldoende betrouwbaar of geheim
+*		: voorlopige cijfers
+**		: nader voorlopige cijfers
+
+De cijfers zijn afgerond. Hierdoor kan het voorkomen, dat de som van de detailgegevens afwijkt van het totaal.
+
+3. KOPPELINGEN NAAR RELEVANTE TABELLEN EN ARTIKELEN 
+
+Relevante tabellen:
+In de tabel <a href='http://statline.cbs.nl/Statweb/publication/?DM=SLNL&PA=37944&D1=0-5&D2=29-40&VW=T'>Religieuze betrokkenheid; vanaf 1849</a> worden kerkelijke gezindte en kerksheid vanaf 18 jaar weergegevens.
+In de tabel <a href='http://statline.cbs.nl/Statweb/publication/?VW=T&DM=SLNL&PA=82904NED&D1=a&D2=a&D3=a&HD=151203-1214&HDR=T&STB=G1,G2'>Religieuze betrokkenheid naar persoonskenmerken </a>worden religieuze betrokkenheid en bezoek religieuze dienst opgesplitst naar verschillende persoonskenmerken. 
+
+Meer informatie is te vinden op de themapagina <a href='http://www.cbs.nl/nl-NL/menu/themas/vrije-tijd-cultuur/publicaties/default.htm'>Vrije tijd en cultuur.</a>
+
+4. BRONNEN EN METHODEN
+
+Het onderzoek is gebaseerd op de Enquête beroepsbevolking (EBB). De beschrijving van het onderzoek Enquête beroepsbevolking (EBB) vindt u op de CBS website bij het thema <a href='http://www.cbs.nl/nl-NL/menu/themas/arbeid-sociale-zekerheid/nieuws/default.htm'>Arbeid en Sociale Zekerheid</a>.
+
+Het betreft in de tabel de bevolking vanaf 15 jaar of ouder. Omdat het een steekproefonderzoek betreft, hebben de cijfers een onnauwkeurigheidsmarge. 
+
+5. MEER INFORMATIE
+
+<a href='http://www.cbs.nl/nl-NL/menu/informatie/publiek/inlichtingen/default.htm'>Infoservice</a>
+
+Copyright (c) Centraal Bureau voor de Statistiek, Den Haag/Heerlen 
+Verveelvoudiging is toegestaan, mits het CBS als bron wordt vermeld.
+
+
+";"_la=nl&_si=&_gu=PV&_ed=Perioden&graphType=map";"$filter=(substringof('PV',RegioS)) and ((Perioden eq '2014JJ00'))&$select=RegioS, Perioden, TotaalKerkelijkeGezindte_2";"Table,Bar,Line,Map";"Regulier";"2015-12-23T06:00:00";"2"
+"DataProperties"
+ID;Position;ParentID;Type;Key;Title;Description;ReleasePolicy;Datatype;Unit;Decimals;Default
+"0";"0";;"GeoDimension";"RegioS";"Regio's";"";;;;;
+"1";"1";;"TimeDimension";"Perioden";"Perioden";"";"true";;;;
+"2";;;"TopicGroup";"";"Kerkelijke gezindte";"Kerkelijke gezindte heeft betrekking op de vraag tot welke kerkelijke gezindte of levensbeschouwelijke groepering men zichzelf rekent. 
+Deze gegevens hebben betrekking op personen vanaf 15 jaar.
+Bron: EBB
+";;;;;
+"3";"2";"2";"Topic";"GeenKerkelijkeGezindte_1";"Geen kerkelijke gezindte";"Het percentage personen dat zich niet rekent tot een kerkelijke gezindte of levensbeschouwelijke groepering.";;"Long";"% van de bevolking";"0";"Impossible"
+"4";"3";"2";"Topic";"TotaalKerkelijkeGezindte_2";"Totaal kerkelijke gezindte";"Het percentage personen dat zich rekent tot een kerkelijke gezindte of levensbeschouwelijke groepering.";;"Long";"% van de bevolking";"0";"Missing"
+"5";"4";"2";"Topic";"RoomsKatholiek_3";"Rooms-Katholiek";"Het percentage personen dat zich rekent tot de Rooms-Katholieke kerk.";;"Long";"% van de bevolking";"0";"Impossible"
+"6";"5";"2";"Topic";"ProtestantseKerkInNederland_4";"Protestantse Kerk in Nederland";"Het percentage personen dat zich rekent tot de Protestantse Kerk in Nederland. Per 1 mei 2004 is de zogeheten Protestantse Kerk in Nederland (PKN) ontstaan als gevolg van een fusie van de Nederlandse Hervormde kerk, de gereformeerde kerken en de evangelisch-lutherse kerk. In de vragenlijst is de PKN als aparte categorie toegevoegd. Omdat bleek dat niet alle leden van de oorspronkelijke gezindten zich met de PKN identificeren is besloten om zowel de oorspronkelijke gezindten waartoe de mensen zich (nog steeds) bekennen als de nieuwe PKN weer te geven. ";;"Long";"% van de bevolking";"0";"Impossible"
+"7";"6";"2";"Topic";"NederlandsHervormd_5";"Nederlands Hervormd";"Het percentage personen dat zich rekent tot de Nederlandse Hervormde kerk.";;"Long";"% van de bevolking";"0";"Impossible"
+"8";"7";"2";"Topic";"Gereformeerd_6";"Gereformeerd";"Het percentage personen dat zich rekent tot een van de gereformeerde kerkgenootschappen.
+";;"Long";"% van de bevolking";"0";"Impossible"
+"9";"8";"2";"Topic";"Islam_7";"Islam";"Het percentage personen dat zich rekent tot de Islam.";;"Long";"% van de bevolking";"0";"Impossible"
+"10";"9";"2";"Topic";"OverigeGezindte_8";"Overige gezindte";"Het percentage personen dat zich rekent tot een hier niet onderscheiden kerkelijke gezindte of levensbeschouwelijke groepering, waaronder joden, hindoes en boeddhisten. ";;"Long";"% van de bevolking";"0";"Impossible"
+"11";;;"TopicGroup";"";"Bezoek religieuze dienst";"Het percentage personen dat een keer per week of vaker, twee tot drie keer per maand, een keer per maand, minder dan een keer per maand, of zelden of nooit een bijeenkomst bezoekt met een godsdienstig of levensbeschouwelijk doel.
+Deze gegevens hebben betrekking op personen vanaf 15 jaar.
+Bron: EBB
+";;;;;
+"12";"10";"11";"Topic";"EenKeerPerWeekOfVaker_9";"Een keer per week of vaker";;;"Long";"% van de bevolking";"0";"Impossible"
+"13";"11";"11";"Topic";"TweeTotDrieKeerPerMaand_10";"Twee tot drie keer per maand";;;"Long";"% van de bevolking";"0";"Impossible"
+"14";"12";"11";"Topic";"EenKeerPerMaand_11";"Een keer per maand";;;"Long";"% van de bevolking";"0";"Impossible"
+"15";"13";"11";"Topic";"MinderDanEenKeerPerMaand_12";"Minder dan een keer per maand";;;"Long";"% van de bevolking";"0";"Impossible"
+"16";"14";"11";"Topic";"ZeldenOfNooit_13";"Zelden of nooit";;;"Long";"% van de bevolking";"0";"Impossible"
+"RegioS"
+Key;Title;Description
+"NL01  ";"Nederland";""
+"LD01  ";"Noord-Nederland (LD)";"Noord-Nederland: Groningen, Friesland, Drenthe
+
+LD = Landsdeel
+
+Regionale groepering van provincies. Nederland telt 4 landsdelen."
+"LD02  ";"Oost-Nederland (LD)";"Oost-Nederland: Overijssel, Flevoland, Gelderland
+
+LD = Landsdeel
+
+Regionale groepering van provincies. Nederland telt 4 landsdelen."
+"LD03  ";"West-Nederland (LD)";"West-Nederland: Utrecht, Noord-Holland, Zuid-Holland, Zeeland
+
+LD = Landsdeel
+
+Regionale groepering van provincies. Nederland telt 4 landsdelen."
+"LD04  ";"Zuid-Nederland (LD)";"Zuid-Nederland: Noord-Brabant, Limburg
+
+LD = Landsdeel
+
+Regionale groepering van provincies. Nederland telt 4 landsdelen."
+"PV20  ";"Groningen (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV21  ";"Friesland (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV22  ";"Drenthe (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV23  ";"Overijssel (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV24  ";"Flevoland (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV25  ";"Gelderland (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV26  ";"Utrecht (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV27  ";"Noord-Holland (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV28  ";"Zuid-Holland (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV29  ";"Zeeland (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV30  ";"Noord-Brabant (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"PV31  ";"Limburg (PV)";"PV = Provincie
+
+Bestuurlijke onderverdeling van het Nederlands grondgebied. Sinds het
+instellen van de provincie Flevoland per 1 januari 1986 telt Nederland 12
+provincies."
+"Perioden"
+Key;Title;Description;Status
+"2010JJ00";"2010";;"Definitief"
+"2011JJ00";"2011";;"Definitief"
+"2012JJ00";"2012";;"Definitief"
+"2013JJ00";"2013";;"Definitief"
+"2014JJ00";"2014";"";"Definitief"
