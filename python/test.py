@@ -2,6 +2,9 @@ from __future__ import division, absolute_import, print_function#, unicode_liter
 
 from sys import stdout
 from time import time
+from flask import Flask
+
+app = Flask(__name__)
 
 def writenow(*args):
     stdout.write("\r%s          " % ' '.join([str(a) for a in args])); stdout.flush()
@@ -164,14 +167,20 @@ def build_database():
 	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2014.csv',DATA)
 	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2014.csv',DATA)
 	return DATA
+
+@app.route('/count/<ftype>')
+def count(ftype):
+    return str(len(DATA(ftype=ftype)))
 	
 def main():
 	t1 = time()
+	global DATA
 	DATA = build_database()
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
 	writenow(len(DATA(ftype='vwo')),'did vwo of which',len(DATA(ftype='vwo',ttype='wo')),'went to wo\n')
 	writenow('all keys of type are:',DATA(False,'type'))
+	app.run()
 	
 if __name__ == '__main__':
 	main()
