@@ -47,11 +47,13 @@
 			
 			var update = function () {
 				var xhttp = new XMLHttpRequest();
-				var query = document.getElementById("query_input").value
+				var query = document.getElementById("query_input").value;
+				var host = "http://" + window.location.host;
+
 				if (query != "" && false) {
-					xhttp.open("GET", "http://127.0.0.1:5000/test3/"+query , false);
+					xhttp.open("GET", host + "/test3/"+query , false);
 				} else {
-					xhttp.open("GET", "http://127.0.0.1:5000/test2" , false);
+					xhttp.open("GET", host + "/test2" , false);
 				}
 				xhttp.send()
 				var data = JSON.parse(xhttp.responseText)
