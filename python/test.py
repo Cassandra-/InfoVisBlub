@@ -1,5 +1,6 @@
 from __future__ import division, absolute_import, print_function#, unicode_literals
 
+import os
 from sys import stdout
 from time import time
 from flask import Flask
@@ -146,26 +147,11 @@ def read(filename,DATA):
 
 def build_database():
 	DATA = StudentDict()
-	read('../Doorstroom PO to VO/05. Doorstroom po naar vo in 2012.csv',DATA)
-	read('../Doorstroom PO to VO/05. Doorstroom po naar vo in 2013.csv',DATA)
-	read('../Doorstroom PO to VO/05. Doorstroom po naar vo in 2014.csv',DATA)
-	read('../Doorstroom MBO to HBO/04. Doorstroom mbo naar ho in 2011.csv',DATA)
-	read('../Doorstroom MBO to HBO/04 Doorstroom van mbo naar hbo in 2012.csv',DATA)
-	read('../Doorstroom MBO to HBO/04. Doorstroom mbo naar hbo in 2013.csv',DATA)
-	read('../Doorstroom MBO to HBO/04. Doorstroom mbo naar hbo in 2014.csv',DATA)
-	read('../Doorstroom HAVO-VWO to HBO-WO/03 Doorstroom havo-vwo naar ho in 2011.csv',DATA)
-	read('../Doorstroom HAVO-VWO to HBO-WO/03. Doorstroom havo-vwo naar ho in 2012.csv',DATA)
-	read('../Doorstroom HAVO-VWO to HBO-WO/03. Doorstroom havo-vwo naar ho in 2013.csv',DATA)
-	read('../Doorstroom HAVO-VWO to HBO-WO/03. Doorstroom havo-vwo naar ho in 2014.csv',DATA)
-	read('../Doorstroom HAVO-VWO to MBO/02 Doorstroom havo-vwo naar mbo in 2011.csv',DATA)
-	read('../Doorstroom HAVO-VWO to MBO/02. Doorstroom havo-vwo naar mbo in 2012.csv',DATA)
-	read('../Doorstroom HAVO-VWO to MBO/02. Doorstroom havo-vwo naar mbo in 2013.csv',DATA)
-	read('../Doorstroom HAVO-VWO to MBO/02. Doorstroom havo-vwo naar mbo in 2014.csv',DATA)
-	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2011.csv',DATA)
-	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2012.csv',DATA)
-	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2013.csv',DATA)
-	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2014.csv',DATA)
-	read('../Doorstroom VMBO to MBO/01. Doorstroom vmbo naar mbo in 2014.csv',DATA)
+
+	for root, _, files in os.walk('..'):
+		for file in files:
+			if file[-4:] == '.csv':
+				read(os.path.join(root, file), DATA)
 	return DATA
 
 @app.route('/count/<ftype>')
