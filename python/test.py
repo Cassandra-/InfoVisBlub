@@ -34,6 +34,8 @@ class StudentDict:
 	
 	def keys(self):
 		return self._indexes.keys()
+		
+	def 
 	
 	def add(self,student):
 		index = len(self._data)
@@ -225,6 +227,7 @@ def test3(query):
 	args,kwargs = str2arg(query)
 	keys = DATA(False,'type')
 	print(keys)
+	print(args,kwargs)
 	obj = {"nodes": [{"name":i} for i in keys],
 			"links": [{"source":s,"target":t,"value":v} for s,t,v in get(keys,args,kwargs)]
 		}
