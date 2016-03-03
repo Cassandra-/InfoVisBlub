@@ -71,11 +71,11 @@ d3.json("cities.json", function(error, data) {
           .attr("cy", padding);
 
       // Add a label.
-      marker.append("text")
-          .attr("x", padding + 7)
-          .attr("y", padding)
-          .attr("dy", ".31em")
-          .text(function(d) { return d.key; });
+      //marker.append("text")
+      //    .attr("x", padding + 7)
+      //    .attr("y", padding)
+      //    .attr("dy", ".31em")
+      //    .text(function(d) { return d.key; });
 
       function transform(d) {
         d = new google.maps.LatLng(d.value[0], d.value[1]);
@@ -89,6 +89,7 @@ d3.json("cities.json", function(error, data) {
 
   // Bind our overlay to the map…
   overlay.setMap(map);
+  //find  locations based on list in http://maps.googleapis.com/maps/api/geocode/json?address=friesland&sensor=false
 });
 
 </script>
