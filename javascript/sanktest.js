@@ -1,8 +1,9 @@
 
 
-var margin = {top: 1, right: 1, bottom: 6, left: 1},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+
+var margin = {top: 1, right: 1, bottom: 1, left: 1},
+    width = document.getElementById("chart").clientWidth - margin.left - margin.right,
+    height = document.getElementById("chart").clientHeight - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),
     format = function(d) { return formatNumber(d) + " students"; },
@@ -21,7 +22,12 @@ var sankey = d3.sankey()
 
 var path = sankey.link();
 
-var make_sankey = function(energy) {
+var make_sankey = function(energy,w,h) {
+  svg.attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  width = document.getElementById("chart").clientWidth - margin.left - margin.right,
+  height = document.getElementById("chart").clientHeight - margin.top - margin.bottom;
+  
   svg.selectAll("*").remove()
   sankey
       .nodes(energy.nodes)

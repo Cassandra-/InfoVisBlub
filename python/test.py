@@ -35,7 +35,14 @@ class StudentDict:
 	def keys(self):
 		return self._indexes.keys()
 		
-	def 
+	def allkeys(self,*args):
+		ans = set()
+		for arg in args:
+			try:
+				ans |= set(self._indexes[arg].keys())
+			except:
+				writenow('no key',arg);nl()
+		return ans
 	
 	def add(self,student):
 		index = len(self._data)
@@ -80,7 +87,12 @@ class StudentDict:
 			tot = set(range(0,len(self._data)))
 			for key,value in kwargs.items():
 				try:
-					tmp = self._indexes[key].get(value,set())
+					if type(value) == list:
+						tmp = set()
+						for v in value:
+							tmp |= self._indexes[key].get(v,set())
+					else:
+						tmp = self._indexes[key].get(value,set())
 					tot &= tmp
 				except: writenow('no key',key); nl()
 			if len(tot) == len(self):
@@ -148,7 +160,7 @@ def read(filename,DATA):
 		x += 1
 		if x % 5000 == 0:
 			writenow('at',filename,cur_year,x)
-		data = [i.strip().lower() for i in line.split(';')]
+		data = [i.strip().lower().replace('/','_') for i in line.split(';')]
 		num = int(data[-1])
 		_from = tuple(zip(from_labels,data[:splitter]+ftype))
 		_to = tuple(zip(to_labels,data[splitter:-1]+ttype))
@@ -192,6 +204,37 @@ def build_database(small=10):
 	#			read(os.path.join(root, file), DATA)
 	return DATA
 
+@app.route('/list1/build')
+def list1_build():
+	out = "<table>\n"
+	for key in list(DATA.allkeys('sector','profiel') ):
+		out += '<tr><td><input type="checkbox" onclick="change_sector(\'%s\',this.checked)"></td><td>%s</tr>\n'%(key,key)
+	return out+"<table>"
+
+@app.route('/list1/select/<name>/<bool>')
+def list1_select(name,bool):
+	global profiel_keys
+	print(name, bool, bool=='true')
+	if bool == 'true':
+		if profiel_keys == DATA.allkeys('sector','profiel'):
+			profiel_keys = set([name])
+		else:
+			profiel_keys.add(name)
+	else:
+		profiel_keys.discard(name)
+		if profiel_keys == set():
+			profiel_keys = DATA.allkeys('sector','profiel')
+	print(profiel_keys)
+	return "okay"
+	
+@app.route('/keys/<query>')
+def returnkeys(query):
+	print(query)
+	args,kwargs = str2arg(query)
+	print(args)
+	keys = DATA.allkeys(*args)
+	return json.dumps(keys)
+	
 def str2arg(i):
 	s = i.split(';')
 	l,d = [], {}
@@ -220,6 +263,18 @@ def get(keys,args=[],kwargs={}):
 		if n > 0:
 			ans.append((i1,i2,n))
 	return ans
+
+@app.route('/sankey/update')
+def sankey_update():
+	types = list(DATA.allkeys('type') )
+	profiles = list(profiel_keys)
+	args,kwargs = [], {'sector':profiles,'profiel':profiles}
+	obj = {"nodes": [{"name":i} for i in types],
+			"links": [{"source":s,"target":t,"value":v} for s,t,v in get(types,args,kwargs)]
+		}
+	print(obj)
+	return json.dumps(obj)
+	
 
 @app.route('/test3/<query>')
 def test3(query):
@@ -264,8 +319,13 @@ def test():
 
 @app.route('/')
 def index():
+	return open('./javascript/dashbord.htm','r').read()
+
+@app.route('/oldmain')
+def index_old():
 	return open('./javascript/test.htm','r').read()
 
+	
 def init():
 	for r in RESOURCES:
 		files = os.listdir(r)
@@ -279,10 +339,13 @@ def init():
 def main():
 	init()
 	t1 = time()
-	global DATA
-	DATA = build_database(1)
+	global DATA, profiel_keys
+	DATA = build_database(0)
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
+	
+	profiel_keys = DATA.allkeys('profiel','sector')
+	
 	#writenow(len(DATA(ftype='vwo')),'did vwo of which',len(DATA(ftype='vwo',ttype='wo')),'went to wo\n')
 	#writenow('all keys of type are:',DATA(False,'type'))
 	app.run()
