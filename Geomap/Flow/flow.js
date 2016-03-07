@@ -6,12 +6,20 @@ var map = new google.maps.Map(d3.select("#map").node(), {
 });
 
 var lineSymbol = {
-    path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
+    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
 };
 
 d3.json("flow.json", function(error, data) {
     if (error) throw error;
-    
+
+    // get the sum of all migrations for arrow size normalisation
+    var total = 0;
+    for (var from in data) {
+        for (var to in data[from]) {
+            total += data[from][to];
+        }
+    }
+
     d3.json("cities_2.json", function(error, cities) {
         if (error) throw error;
 
@@ -33,7 +41,7 @@ d3.json("flow.json", function(error, data) {
                     map: map,
                     strokeColor: 'limegreen',
                     strokeOpacity: 0.7,
-                    strokeWeight: data[from][to] / 150 // TODO: normalize properly
+                    strokeWeight: (data[from][to] / total) * 2000
                 });
             }
         }
