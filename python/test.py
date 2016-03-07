@@ -4,7 +4,7 @@ print( "You should run from the project root." )
 
 from sys import stdout
 from time import time
-from flask import Flask
+from flask import Flask, Response
 import os
 import random
 import json
@@ -206,25 +206,35 @@ def build_database(small=10):
 
 @app.route('/list1/build')
 def list1_build():
-	out = "<table>\n"
+	out = "<table>\n<tr><td><i> f</i></td><td><i> t</i></td><td><i>name</i></td></tr></i>"
 	for key in list(DATA.allkeys('sector','profiel') ):
-		out += '<tr><td><input type="checkbox" onclick="change_sector(\'%s\',this.checked)"></td><td>%s</tr>\n'%(key,key)
+		out += '<tr><td><input type="checkbox" onclick="change_sector(\'%s\',this.checked,true)"><td><input type="checkbox" onclick="change_sector(\'%s\',this.checked,false)"></td><td>%s</tr>\n'%(key,key,key)
 	return out+"<table>"
 
-@app.route('/list1/select/<name>/<bool>')
-def list1_select(name,bool):
-	global profiel_keys
-	print(name, bool, bool=='true')
-	if bool == 'true':
-		if profiel_keys == DATA.allkeys('sector','profiel'):
-			profiel_keys = set([name])
+@app.route('/list1/select/<name>/<bool>/<t>')
+def list1_select(name,bool,t):
+	global tprofiel_keys,fprofiel_keys
+	if t == 'true':
+		if bool == 'true':
+			if fprofiel_keys == DATA.allkeys('sector','profiel'):
+				fprofiel_keys = set([name])
+			else:
+				fprofiel_keys.add(name)
 		else:
-			profiel_keys.add(name)
+			fprofiel_keys.discard(name)
+			if fprofiel_keys == set():
+				fprofiel_keys = DATA.allkeys('sector','profiel')
 	else:
-		profiel_keys.discard(name)
-		if profiel_keys == set():
-			profiel_keys = DATA.allkeys('sector','profiel')
-	print(profiel_keys)
+		if bool == 'true':
+			if tprofiel_keys == DATA.allkeys('sector','profiel'):
+				tprofiel_keys = set([name])
+			else:
+				tprofiel_keys.add(name)
+		else:
+			tprofiel_keys.discard(name)
+			if tprofiel_keys == set():
+				tprofiel_keys = DATA.allkeys('sector','profiel')
+	print(tprofiel_keys,fprofile_keys)
 	return "okay"
 	
 @app.route('/keys/<query>')
@@ -267,8 +277,9 @@ def get(keys,args=[],kwargs={}):
 @app.route('/sankey/update')
 def sankey_update():
 	types = list(DATA.allkeys('type') )
-	profiles = list(profiel_keys)
-	args,kwargs = [], {'sector':profiles,'profiel':profiles}
+	tprofiles = list(tprofiel_keys)
+	fprofiles = list(fprofiel_keys)
+	args,kwargs = [], {'tsector':tprofiles,'tprofiel':tprofiles, 'fsector':fprofiles,'fprofiel':fprofiles, }
 	obj = {"nodes": [{"name":i} for i in types],
 			"links": [{"source":s,"target":t,"value":v} for s,t,v in get(types,args,kwargs)]
 		}
@@ -330,8 +341,12 @@ def init():
 	for r in RESOURCES:
 		files = os.listdir(r)
 		for file in files:
-			com = "@app.route('%s')\ndef %s():\n\treturn open('%s','r').read()"%(
-				r[1:]+'/'+file,'f'+str(random.random())[2:],r+'/'+file)
+			if '.css' in file:
+				com = "@app.route('%s')\ndef %s():\n\tresp = Response( open('%s','r').read() )\n\tresp.headers['Content-Type'] = 'text/css; charset=UTF-8'\n\treturn resp"%(
+					r[1:]+'/'+file,'f'+str(random.random())[2:],r+'/'+file)
+			else:
+				com = "@app.route('%s')\ndef %s():\n\treturn open('%s','r').read()"%(
+					r[1:]+'/'+file,'f'+str(random.random())[2:],r+'/'+file)
 			print(com)
 			exec( com)
 
@@ -339,12 +354,13 @@ def init():
 def main():
 	init()
 	t1 = time()
-	global DATA, profiel_keys
+	global DATA, tprofiel_keys, fprofiel_keys
 	DATA = build_database(0)
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
 	
-	profiel_keys = DATA.allkeys('profiel','sector')
+	tprofiel_keys = DATA.allkeys('profiel','sector')
+	fprofiel_keys = DATA.allkeys('profiel','sector')
 	
 	#writenow(len(DATA(ftype='vwo')),'did vwo of which',len(DATA(ftype='vwo',ttype='wo')),'went to wo\n')
 	#writenow('all keys of type are:',DATA(False,'type'))
