@@ -20,6 +20,9 @@ d3.json("flow.json", function(error, data) {
                 var from_coords = cities[from];
                 var to_coords = cities[to];
 
+                if (!from_coords || !to_coords)
+                    continue;
+
                 var line = new google.maps.Polyline({
                     path: [{lat: from_coords[0], lng: from_coords[1]},
                            {lat: to_coords[0], lng: to_coords[1]}],
@@ -30,7 +33,7 @@ d3.json("flow.json", function(error, data) {
                     map: map,
                     strokeColor: 'limegreen',
                     strokeOpacity: 0.7,
-                    strokeWeight: data[from][to] / 5 // TODO: normalize properly
+                    strokeWeight: data[from][to] / 150 // TODO: normalize properly
                 });
             }
         }
