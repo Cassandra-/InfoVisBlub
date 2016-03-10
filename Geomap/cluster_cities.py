@@ -4,7 +4,6 @@ from sklearn.datasets.samples_generator import make_blobs
 import json
 import os
 import ast
-import sys
 
 if os.path.exists('new_cities_2.json'):
     with open('new_cities_2.json', 'r') as infile:
