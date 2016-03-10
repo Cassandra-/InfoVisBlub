@@ -40,12 +40,24 @@ k_means = KMeans(n_clusters=k)
 k_means.fit(X)
 
 cluster_centers = k_means.cluster_centers_
+clusters_dict = {}
+clusters_reference_dict = {}
 
 with open('cities_2_clusters.json', 'w') as outfile:
     outfile.write('{')
     cnt = 0
     for center in cluster_centers:
         outfile.write("\"" + str(cnt) + '\":[' + str(center[0]) + ',' + str(center[1]) + '],')
+        clusters_dict[cnt] = center
+        clusters_reference_dict[cnt] = []
         cnt += 1
     outfile.write('}')
     outfile.close()
+
+for key in read_data:
+    clusters_reference_dict[k_means.predict([read_data[key]])[0]].append(key)
+
+with open('cities_2_clusters_reference.json', 'w') as outfile:
+    outfile.write(json.dumps(clusters_reference_dict))
+outfile.close()
+
