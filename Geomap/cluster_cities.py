@@ -6,15 +6,15 @@ import os
 import ast
 import sys
 
-if os.path.exists('cities_2.json'):
-    with open('cities_2.json', 'r') as infile:
+if os.path.exists('new_cities_2.json'):
+    with open('new_cities_2.json', 'r') as infile:
         read_data = infile.read()
         read_data = ast.literal_eval(read_data)
     infile.close()
 
 # filter schools outside the Netherlands
 keys_to_remove = []
-with open('cities_2.json', 'w') as outfile:
+with open('new_cities_2.json', 'w') as outfile:
     outfile.write('{')
     try:
         for city in read_data:
