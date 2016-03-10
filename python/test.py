@@ -279,7 +279,7 @@ def sankey_update():
 	types = list(DATA.allkeys('type') )
 	tprofiles = list(tprofiel_keys)
 	fprofiles = list(fprofiel_keys)
-	args,kwargs = [], {'tsector':tprofiles,'tprofiel':tprofiles, 'fsector':fprofiles,'fprofiel':fprofiles, }
+	args,kwargs = [], {'tsector':tprofiles,'tprofiel':tprofiles, 'fsector':fprofiles,'fprofiel':fprofiles }
 	obj = {"nodes": [{"name":i} for i in types],
 			"links": [{"source":s,"target":t,"value":v} for s,t,v in get(types,args,kwargs)]
 		}
