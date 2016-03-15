@@ -50,7 +50,7 @@ var make_sankey = function(energy) {
 			.sort(function(a, b) { return b.dy - a.dy; });
 
 	link.append("title")
-			.text(function(d) { return d.source.name + " -> " + d.target.name + "\n" + format(d.value); });
+			.text(function(d) { return d.source.name + " -> " + d.target.name +"( "+d.region+" )"+ "\n" + format(d.value); });
 
 	var node = svg.append("g").selectAll(".node")
 			.data(energy.nodes)

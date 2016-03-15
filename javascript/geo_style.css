@@ -14,9 +14,8 @@
 }
 
 .stations svg {
-	width: 60px;
-	height: 20px;
-	padding-right: 100px;
+	width: 22px;
+	height: 22px;
 	font: 10px sans-serif;
 }
 
@@ -24,4 +23,8 @@
 	fill: brown;
 	stroke: black;
 	stroke-width: 1.5px;
+}
+
+.stations circle:hover {
+	cursor: pointer;
 }

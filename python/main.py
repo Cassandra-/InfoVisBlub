@@ -9,7 +9,7 @@ import os
 import random
 import json
 
-RESOURCES = ['./javascript','./javascript/utils','./Flow']
+RESOURCES = ['./javascript','./javascript/utils','./Flow','./Geomap']
 
 app = Flask(__name__)
 
@@ -286,6 +286,20 @@ def returnkeys(query):
 	keys = DATA.allkeys(*args)
 	return json.dumps(keys)
 	
+@app.route('/regions/<zoom>/<id>')
+def region_keys(zoom,id):
+	ans = 'false'
+	if id in region_data[zoom]:
+		regs = tuple(region_data[zoom][id])
+		if regs in regions:
+			regions.discard(regs)
+			ans = 'false'
+		else:
+			regions.add(regs)
+			ans = 'true'
+	return ans
+	
+	
 def str2arg(i):
 	s = i.split(';')
 	l,d = [], {}
@@ -316,11 +330,11 @@ def sankey_update():
 	fprofiles = list(fprofiel_keys)
 	links = [];
 	if len(regions) < 1:
-		links += [{"source":s,"target":t,"value":v, "color":"#000"} for s,t,v in get(types, \
+		links += [{"source":s,"target":t,"value":v, "color":"#000", "region":"Netherlands"} for s,t,v in get(types, \
 						[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years})]
 	else:
 		for i,region in enumerate(regions):
-			links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)]} for s,t,v in get(types, \
+			links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":region} for s,t,v in get(types, \
 							[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':region})]
 	obj = {"nodes": [{"name":i} for i in types], "links": links }
 	print(obj)
@@ -348,7 +362,7 @@ def init():
 def main(size=0):
 	init()
 	t1 = time()
-	global DATA, tprofiel_keys, fprofiel_keys, years, regions
+	global DATA, tprofiel_keys, fprofiel_keys, years, regions, region_data
 	DATA = build_database(size)
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
@@ -356,7 +370,11 @@ def main(size=0):
 	tprofiel_keys = DATA.allkeys('sector')
 	fprofiel_keys = DATA.allkeys('sector')
 	years = ['2011','2012','2013','2014']
-	regions = {}
+	regions = set()
+	region_data = {'8':json.load(open('Geomap/cities_8_clusters_reference.json','r'))
+					,'9':json.load(open('Geomap/cities_9_clusters_reference.json','r'))
+					,'10':json.load(open('Geomap/cities_10_clusters_reference.json','r'))
+				  }
 	
 	#writenow(len(DATA(ftype='vwo')),'did vwo of which',len(DATA(ftype='vwo',ttype='wo')),'went to wo\n')
 	#writenow('all keys of type are:',DATA(False,'type'))
