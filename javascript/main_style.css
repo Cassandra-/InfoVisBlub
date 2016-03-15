@@ -1,0 +1,46 @@
+#main {
+	width: 100vw;
+	height:100vh;
+}
+
+#leftpanel {
+	float: left;
+	width: 18vw;
+	height: 100vh;
+}
+#mainpanel {
+	float: right;
+	width: 79vw;
+	height: 100vh;
+}
+
+.cat_list {
+	background-color: #eee;
+	margin: 1vh;
+}
+
+.disp_window {
+	height: 45%;
+	width: 45%;
+	float: left;
+	background-color: #eee;
+	margin: 1px;
+}
+
+#showcase {
+	margin: 0 20px;
+	text-align: center;
+}
+#range {
+	height: 10px;
+	width: 12vw;
+	margin: 0 auto 45px;
+}
+#value-span,
+#value-input {
+	width: 50%;
+	float: left;
+	display: block;
+	text-align: center;
+	margin: 0;
+}
