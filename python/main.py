@@ -9,7 +9,7 @@ import os
 import random
 import json
 
-RESOURCES = ['./javascript','./javascript/utils','./Flow','./Geomap']
+RESOURCES = ['./javascript','./javascript/utils','./Flow','./Geomap', './Geomap/Flow']
 
 app = Flask(__name__)
 
@@ -286,19 +286,52 @@ def returnkeys(query):
 	keys = DATA.allkeys(*args)
 	return json.dumps(keys)
 	
-@app.route('/regions/<zoom>/<id>')
-def region_keys(zoom,id):
-	ans = 'false'
-	if id in region_data[zoom]:
-		regs = tuple(region_data[zoom][id])
-		if regs in regions:
-			regions.discard(regs)
-			ans = 'false'
-		else:
-			regions.add(regs)
-			ans = 'true'
-	return ans
+@app.route('/regions/<zoom>/<id>/<curzoom>')
+def region_keys(zoom,id,curzoom):
+	zoom = zoomer(zoom)
+	if (zoom,id) in regions:
+		regions.discard( (zoom,id) )
+		region_data[zoom][id]['selected']='false'
+	elif id in region_data[zoom]:
+		regions.add( (zoom,id) )
+		region_data[zoom][id]['selected']='true'
 	
+	return map_update(curzoom)
+
+@app.route('/regions/<zoom>')
+def map_update(zoom):
+	curzoom = zoomer(zoom)
+	obj = dict( (k,dict(v)) for k,v in region_data[curzoom].items() )
+	for z,i in regions:
+		if z != curzoom:
+			obj[i] = dict(region_data[z][i])
+			obj[i]['special'] = z
+			if int(z) < int(curzoom):
+				obj[i]['rad'] *= 3
+			else:
+				obj[i]['rad'] /= 3
+	
+	m = 0
+	for k,v in obj.items():
+		v['rad'] = len( DATA(**{'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, 'gemeente':v['name'] } ) )
+		if m < v['rad']:
+			m = v['rad']
+	for k,v in obj.items():
+		v['rad'] = int(v['rad'] / m * 10 + 0.5)
+	
+	if curzoom != zoom:
+		for k,v in obj.items():
+			v['rad'] *= 2
+	return json.dumps(obj)
+
+def zoomer(zoom):
+	if zoom == '9':
+		return '8'
+	if zoom == '11':
+		return '10'
+	if zoom == '13':
+		return '12'
+	return zoom
 	
 def str2arg(i):
 	s = i.split(';')
@@ -334,8 +367,9 @@ def sankey_update():
 						[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years})]
 	else:
 		for i,region in enumerate(regions):
-			links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":region} for s,t,v in get(types, \
-							[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':region})]
+			reg = region_data[region[0]][region[1]]['name']
+			links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":reg} for s,t,v in get(types, \
+							[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':reg})]
 	obj = {"nodes": [{"name":i} for i in types], "links": links }
 	print(obj)
 	return json.dumps(obj)
@@ -358,6 +392,14 @@ def init():
 					r[1:]+'/'+file,'f'+fname,r+'/'+file)
 			exec( com)
 
+def region_init():
+	global regions, region_data
+	
+	cities = json.load(open('./Geomap/zoom_cities.json','r'))
+	clusters = json.load(open('./Geomap/zoom_cluster.json','r'))
+	
+	regions = set()
+	region_data = {'8':clusters, '9':clusters, '10':cities, '11':cities}
 
 def main(size=0):
 	init()
@@ -370,12 +412,8 @@ def main(size=0):
 	tprofiel_keys = DATA.allkeys('sector')
 	fprofiel_keys = DATA.allkeys('sector')
 	years = ['2011','2012','2013','2014']
-	regions = set()
-	region_data = {'8':json.load(open('Geomap/cities_8_clusters_reference.json','r'))
-					,'9':json.load(open('Geomap/cities_9_clusters_reference.json','r'))
-					,'10':json.load(open('Geomap/cities_10_clusters_reference.json','r'))
-				  }
 	
+	region_init()
 	#writenow(len(DATA(ftype='vwo')),'did vwo of which',len(DATA(ftype='vwo',ttype='wo')),'went to wo\n')
 	#writenow('all keys of type are:',DATA(False,'type'))
 	app.run()

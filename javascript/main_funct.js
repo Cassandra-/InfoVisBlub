@@ -2,17 +2,30 @@ var host = "http://" + window.location.host;
 
 var xhttp = new XMLHttpRequest();
 
-xhttp.open("GET", host + "/list1/build" , false);
+xhttp.open("GET", host + "/list1/build" , true);
 xhttp.send();
-document.getElementById("sector_list").innerHTML = xhttp.responseText;
+xhttp.onreadystatechange = function() {
+	document.getElementById("sector_list").innerHTML = xhttp.responseText;
+	document.getElementById("waitC").style.display="none";
+	document.getElementById("waitC").style.cursor="";
+}
 
 function sankey_update() {}
+function map_init() {}
 
 function change_sector(name,bool,t) {
-	xhttp.open("GET", host + "/list1/select/"+name+"/"+bool+"/"+t, false);
+	document.getElementById("waitC").style.display="block";
+	document.getElementById("waitC").style.cursor="wait";
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", host + "/list1/select/"+name+"/"+bool+"/"+t, true);
 	xhttp.send();
-	document.getElementById("sector_list").innerHTML = xhttp.responseText;
-	sankey_update();
+	xhttp.onreadystatechange = function() {
+		document.getElementById("sector_list").innerHTML = xhttp.responseText;
+		sankey_update();
+		map_init();
+		document.getElementById("waitC").style.display="none";
+		document.getElementById("waitC").style.cursor="";
+	}
 }
 
 var range = document.getElementById('range');
@@ -36,7 +49,11 @@ noUiSlider.create(range, {
 
 // When the slider value changes, update the input and span
 range.noUiSlider.on('update', function( values, handle ) {
-	xhttp.open("GET", host + "/years/"+values[0]+"/"+values[1], false);
+	var xhttp = new XMLHttpRequest()
+	xhttp.open("GET", host + "/years/"+values[0]+"/"+values[1], true);
 	xhttp.send();
-	sankey_update();
+	xhttp.onreadystatechange = function() {
+		sankey_update();
+		map_init();
+	}
 });

@@ -20,11 +20,16 @@
 }
 
 .disp_window {
-	height: 45%;
-	width: 45%;
+	height: 45vh;
+	width: 35vw;
 	float: left;
 	background-color: #eee;
 	margin: 1px;
+}
+
+.fill {
+	width: 100%;
+	height: 100%;
 }
 
 #showcase {
@@ -44,3 +49,28 @@
 	text-align: center;
 	margin: 0;
 }
+
+.waiter {
+	width:35vw;
+	height:45vh;
+	position:absolute;
+	z-index:1000;
+	background:rgba(0,0,0,0.3);
+	text-align:center;
+	line-height: 45vh;
+	font-size: xx-large;
+	color:yellow;
+}
+
+#waitC {
+	width: 18vw;
+	height: 100%;
+	position:absolute;
+	z-index:1000;
+	background:rgba(0,0,0,0.3);
+	text-align:center;
+	line-height:45vh;
+	font-size: xx-large;
+	color:yellow;
+}
+	
