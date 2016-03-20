@@ -8,16 +8,16 @@ var map = new google.maps.Map(d3.select("#map").node(), {
 });
 
 function map_init() {
-	document.getElementById("waitM").style.display="block";
-	document.getElementById("waitM").style.cursor="wait";
+	start_wait(["waitM"]);
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", host + "/regions/"+map.zoom, true);
 	xhttp.send();
 	xhttp.onreadystatechange = function(){
-		var data = JSON.parse(xhttp.responseText);
-		update_map(data);
-		document.getElementById("waitM").style.display="none";
-		document.getElementById("waitM").style.cursor="";
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			var data = JSON.parse(xhttp.responseText);
+			update_map(data);
+			stop_wait(["waitM"]);
+		}
 	}
 }
 
@@ -80,8 +80,7 @@ map.addListener('zoom_changed', map_init);
 
 
 function update_regions(special,id) {
-	document.getElementById("waitM").style.display="block";
-	document.getElementById("waitM").style.cursor="wait";
+	start_wait(["waitM","waitS"]);
 	var xhttp = new XMLHttpRequest();
 	if (special) {
 		xhttp.open("GET", host + "/regions/"+special+"/"+id+"/"+map.zoom, true);
@@ -90,10 +89,11 @@ function update_regions(special,id) {
 	}
 	xhttp.send();
 	xhttp.onreadystatechange = function(){
-		var data = JSON.parse(xhttp.responseText);
-		update_map(data);
-		sankey_update();
-		document.getElementById("waitM").style.display="none";
-		document.getElementById("waitM").style.cursor="";
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			var data = JSON.parse(xhttp.responseText);
+			update_map(data);
+			sankey_update();
+			stop_wait(["waitM"]);
+		}
 	}
 }

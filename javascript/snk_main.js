@@ -91,16 +91,16 @@ var make_sankey = function(energy) {
 }
 
 function sankey_update() {
-	document.getElementById("waitS").style.display="block";
-	document.getElementById("waitS").style.cursor="wait";
+	start_wait(["waitS"]);
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", host + "/sankey/update", true)
 	xhttp.send();
 	xhttp.onreadystatechange = function(){
-		var data = JSON.parse(xhttp.responseText);
-		make_sankey(data);
-		document.getElementById("waitS").style.display="none";
-		document.getElementById("waitS").style.cursor="";
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			var data = JSON.parse(xhttp.responseText);
+			make_sankey(data);
+			stop_wait(["waitS"]);
+		}
 	}
 }
 

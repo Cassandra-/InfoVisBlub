@@ -225,6 +225,7 @@ def set_years(begin,end):
 def list1_build():
 	out = "<table>\n<tr><td><i> f</i></td><td><i> t</i></td><td><i>name</i></td></tr></i>"
 	tot = []
+	idn=0
 	for key in list(DATA.allkeys('sector') ):
 		tch = fch = tgo = fgo = ''
 		tnum = len(DATA(fsector=list(fprofiel_keys),tsector=key)) 
@@ -242,12 +243,13 @@ def list1_build():
 		if key in fprofiel_keys:
 			fch = 'checked="true"'
 		
-		a = (fnum+tnum, '<tr>\
-			<td><input type="checkbox" %s %s onclick="change_sector(\'%s\',this.checked,true)">\
-			<td><input type="checkbox" %s %s onclick="change_sector(\'%s\',this.checked,false)">\
-			</td><td>%s</tr>\n'%(fch,fgo,key,tch,tgo,key,key)
+		a = (fnum+tnum, '<tr id="mytr%d">\
+<td><input type="checkbox" %s %s onclick="change_sector(\'%s\',this.checked,true)">\
+<td><input type="checkbox" %s %s onclick="change_sector(\'%s\',this.checked,false)">\
+</td><td>%s</tr>\r\n'%(idn,fch,fgo,key,tch,tgo,key,key)
 		    )
 		tot.append(a)
+		idn += 1
 	tot.sort(key=lambda a: -a[0])
 	out += ' '.join([x for n,x in tot])
 	return out+"</table>"
@@ -284,7 +286,7 @@ def returnkeys(query):
 	args,kwargs = str2arg(query)
 	print(args)
 	keys = DATA.allkeys(*args)
-	return json.dumps(keys)
+	return jsonfy(keys)
 	
 @app.route('/regions/<zoom>/<id>/<curzoom>')
 def region_keys(zoom,id,curzoom):
@@ -311,18 +313,20 @@ def map_update(zoom):
 			else:
 				obj[i]['rad'] /= 3
 	
-	m = 0
-	for k,v in obj.items():
-		v['rad'] = len( DATA(**{'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, 'gemeente':v['name'] } ) )
-		if m < v['rad']:
-			m = v['rad']
-	for k,v in obj.items():
-		v['rad'] = int(v['rad'] / m * 10 + 0.5)
+	if STUDCOUNT:
+		m = 0
+		for k,v in obj.items():
+			v['rad'] = len( DATA(**{'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, 'gemeente':v['name'] } ) )
+			if m < v['rad']:
+				m = v['rad']
+		for k,v in obj.items():
+			v['rad'] = int(v['rad'] / m * 10 + 0.5)
 	
 	if curzoom != zoom:
 		for k,v in obj.items():
 			v['rad'] *= 2
-	return json.dumps(obj)
+	
+	return jsonfy(obj)
 
 def zoomer(zoom):
 	if zoom == '9':
@@ -346,6 +350,11 @@ def str2arg(i):
 			else:
 				l.append(e)
 	return l,d
+	
+def jsonfy(dic):
+	obj = json.dumps(dic)
+	ans = obj.replace("}","}\r\n")
+	return ans
 
 def get(keys,args=[],kwargs={}):
 	ans = []
@@ -372,7 +381,7 @@ def sankey_update():
 							[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':reg})]
 	obj = {"nodes": [{"name":i} for i in types], "links": links }
 	print(obj)
-	return json.dumps(obj)
+	return jsonfy(obj)
 
 @app.route('/')
 def index():
@@ -401,10 +410,11 @@ def region_init():
 	regions = set()
 	region_data = {'8':clusters, '9':clusters, '10':cities, '11':cities}
 
-def main(size=0):
+def main(size=0,studcount=False):
 	init()
 	t1 = time()
-	global DATA, tprofiel_keys, fprofiel_keys, years, regions, region_data
+	global DATA, tprofiel_keys, fprofiel_keys, years, regions, region_data, STUDCOUNT
+	STUDCOUNT = studcount;
 	DATA = build_database(size)
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
@@ -419,9 +429,10 @@ def main(size=0):
 	app.run()
 	
 if __name__ == '__main__':
-	size = 0
-	try:
-		size = int(argv[1])
-	except:
-		pass
-	main(size)
+	size,studcount = 0, False
+	try: size = int(argv[1])
+	except: pass
+	try: studcount = (argv[2][0].lower() == 't')
+	except: pass
+	
+	main(size,studcount)

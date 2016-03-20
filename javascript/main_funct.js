@@ -5,26 +5,62 @@ var xhttp = new XMLHttpRequest();
 xhttp.open("GET", host + "/list1/build" , true);
 xhttp.send();
 xhttp.onreadystatechange = function() {
-	document.getElementById("sector_list").innerHTML = xhttp.responseText;
-	document.getElementById("waitC").style.display="none";
-	document.getElementById("waitC").style.cursor="";
+	if (xhttp.readyState == 4 && xhttp.status == 200) {
+		document.getElementById("sector_list").innerHTML = xhttp.responseText;
+		document.getElementById("waitC").style.display="none";
+		document.getElementById("waitC").style.cursor="";
+	}
 }
 
 function sankey_update() {}
 function map_init() {}
 
+function start_wait(ids) {
+	if (typeof(ids) == "string") {
+		document.getElementById(ids).style.display="block";
+		document.getElementById(ids).style.cursor="wait";
+	} else {
+		for (var id in ids) {
+			document.getElementById(ids[id]).style.display="block";
+			document.getElementById(ids[id]).style.cursor="wait";
+		}
+	}
+}
+function stop_wait(ids) {
+	if (typeof(ids) == "string") {
+		document.getElementById(ids).style.display="none";
+		document.getElementById(ids).style.cursor="";
+	} else {
+		for (var id in ids) {
+			document.getElementById(ids[id]).style.display="none";
+			document.getElementById(ids[id]).style.cursor="";
+		}
+	}
+}
+		
+
 function change_sector(name,bool,t) {
-	document.getElementById("waitC").style.display="block";
-	document.getElementById("waitC").style.cursor="wait";
+	start_wait(["waitC","waitM","waitS"]);
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", host + "/list1/select/"+name+"/"+bool+"/"+t, true);
 	xhttp.send();
 	xhttp.onreadystatechange = function() {
-		document.getElementById("sector_list").innerHTML = xhttp.responseText;
-		sankey_update();
-		map_init();
-		document.getElementById("waitC").style.display="none";
-		document.getElementById("waitC").style.cursor="";
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			document.getElementById("sector_list").innerHTML = xhttp.responseText;
+			//animate_table()
+			sankey_update();
+			map_init();
+			stop_wait(["waitC"]);
+		}
+	}
+}
+
+function animate_table() {
+	vertical_offset = 20; // Start at header height
+	
+	for ( index = 0; index < 20; index++) {
+		$("#mytr"+index).stop().delay(300 * index).animate({ top: vertical_offset}, 300, 'swing');
+		vertical_offset += 20.8;
 	}
 }
 
@@ -53,7 +89,9 @@ range.noUiSlider.on('update', function( values, handle ) {
 	xhttp.open("GET", host + "/years/"+values[0]+"/"+values[1], true);
 	xhttp.send();
 	xhttp.onreadystatechange = function() {
-		sankey_update();
-		map_init();
+		if (xhttp.readyState == 4 && xhttp.status == 200) {
+			sankey_update();
+			map_init();
+		}
 	}
 });
