@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="../javascript/main_style.css">
 	<link rel="stylesheet" type="text/css" href="../javascript/geo_style.css">
 	<link rel="stylesheet" type="text/css" href="../javascript/snk_style.css">
+	<link rel="stylesheet" type="text/css" href="../javascript/flow_style.css">
 	<link rel="stylesheet" type="text/css" href="../javascript/utils/nouislider.min.css">
 	</head>
 
@@ -17,7 +18,7 @@
 		<div id="main">
 			<div id="leftpanel">
 				<div id="range"></div>
-				<div id="waitC"></div>
+				<div id="waitC">Loading...</div>
 				<div class="cat_list" id="sector_list">
 					
 				</div>
@@ -35,11 +36,11 @@
 					<div id="chart" class="fill"></div>
 				</div>
 				<div class="disp_window">
-					<div class="waiter">Loading...</div>
+					<div id="waitI" class="waiter">Loading...</div>
 					<div id="info"></div>
 				</div>
 				<div class="disp_window" >
-					<div class="waiter">Loading...</div>
+					<div id="waitF" class="waiter">Loading...</div>
 					<div id="flowmap"></div>
 				</div>
 			</div>
@@ -55,6 +56,6 @@
 		<script src="../javascript/geo_main.js"></script>
 		
 		<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
-		<!-- <script src="../Flow/flow.js"></script> -->
+		<script src="../javascript/flow_main.js"></script>
 	</body>
 </html>

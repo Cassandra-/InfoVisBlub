@@ -138,27 +138,27 @@ def read(filename,DATA):
 	ttype = []
 	if 'Doorstroom HAVO-VWO to HBO-WO' in filename:
 		splitter = 7
-		from_labels = ['brin nr','vest nr','gem nr','gemeente','type','diploma','sector']
-		to_labels = ['brin nr','type','sector','gem nr','gemeente']
+		from_labels = ['brin_nr','vest_nr','gem_nr','gemeente','type','diploma','sector']
+		to_labels = ['brin_nr','type','sector','gem_nr','gemeente']
 	elif 'Doorstroom HAVO-VWO to MBO' in filename:
 		splitter = 7
-		from_labels = ['brin nr','vest nr','gem nr','gemeente','type','diploma','sector']
-		to_labels = ['brin nr','leerweg','sector','kwalificatie','kwalif code','brin nr kc','kenniscentrum','gem nr','gemeente']+['type']
+		from_labels = ['brin_nr','vest_nr','gem_nr','gemeente','type','diploma','sector']
+		to_labels = ['brin_nr','leerweg','sector','kwalificatie','kwalif code','brin_nr_kc','kenniscentrum','gem_nr','gemeente']+['type']
 		ttype = ['mbo']
 	elif 'Doorstroom VMBO to MBO' in filename:
 		splitter = 7
 		ftype,ttype = ['vmbo'],['mbo']
-		from_labels = ['brin nr','vest nr','gem nr','gemeente','leerweg','sector','afdeling']+['type']
-		to_labels = ['brin nr','sector','kwalificatie','kwalif code','brin nr kc','kenniscentrum']+['type']
+		from_labels = ['brin_nr','vest_nr','gem_nr','gemeente','leerweg','sector','afdeling']+['type']
+		to_labels = ['brin_nr','sector','kwalificatie','kwalif code','brin_nr kc','kenniscentrum']+['type']
 	elif 'Doorstroom MBO to HBO' in filename:
 		splitter = 5
 		ftype,ttype = ['mbo'],['hbo']
-		from_labels = ['brin nr','instelling','sector','leerweg','niveau']+['type']
-		to_labels = ['brin nr','instelling','croho']+['type']
+		from_labels = ['brin_nr','instelling','sector','leerweg','niveau']+['type']
+		to_labels = ['brin_nr','instelling','croho']+['type']
 	elif 'Doorstroom PO to VO' in filename:
 		splitter = 5
-		from_labels = ['brin nr','vest nr','instelling','straat','gemeente']
-		to_labels = ['brin nr','vest nr','instelling','straat','gemeente']
+		from_labels = ['brin_nr','vest_nr','instelling','straat','gemeente']
+		to_labels = ['brin_nr','vest_nr','instelling','straat','gemeente']
 	else:
 		writenow('wrong file\n')
 		return
@@ -316,7 +316,10 @@ def map_update(zoom):
 	if STUDCOUNT:
 		m = 0
 		for k,v in obj.items():
-			v['rad'] = len( DATA(**{'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, 'gemeente':v['name'] } ) )
+			if 'brinnr' in v:
+				v['rad'] = len( DATA(**{'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, 'brinnr':v['brinnr'] } ) )
+			else:
+				v['rad'] = len( DATA(**{'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, 'gemeente':v['name'] } ) )
 			if m < v['rad']:
 				m = v['rad']
 		for k,v in obj.items():
@@ -376,9 +379,16 @@ def sankey_update():
 						[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years})]
 	else:
 		for i,region in enumerate(regions):
-			reg = region_data[region[0]][region[1]]['name']
-			links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":reg} for s,t,v in get(types, \
-							[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':reg})]
+			if 'brinnr' in region_data[region[0]][region[1]]:
+				sname = region_data[region[0]][region[1]]['name']
+				brinnr = region_data[region[0]][region[1]]['brinnr']
+				print(sname,brinnr,len(DATA(brin_nr=brinnr)))
+				links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":sname} for s,t,v in get(types, \
+								[],{'tsector':tprofiles,'fsector':fprofiles,'year':years,'brin_nr':brinnr})]
+			else:
+				reg = region_data[region[0]][region[1]]['name']
+				links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":reg} for s,t,v in get(types, \
+								[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':reg})]
 	obj = {"nodes": [{"name":i} for i in types], "links": links }
 	print(obj)
 	return jsonfy(obj)
@@ -406,9 +416,11 @@ def region_init():
 	
 	cities = json.load(open('./Geomap/zoom_cities.json','r'))
 	clusters = json.load(open('./Geomap/zoom_cluster.json','r'))
+	schools = json.load(open('./Geomap/zoom_schools.json','r'))
+	province = json.load(open('./Geomap/zoom_province.json','r'))
 	
 	regions = set()
-	region_data = {'8':clusters, '9':clusters, '10':cities, '11':cities}
+	region_data = {'7':province, '8':clusters, '9':clusters, '10':cities, '11':cities, '12':schools, '13':schools}
 
 def main(size=0,studcount=False):
 	init()

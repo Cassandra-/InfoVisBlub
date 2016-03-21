@@ -34,7 +34,7 @@ for key in keys_to_remove:
 X = read_data.values()
 X = np.array([np.array(xi) for xi in X])
 
-k = 350
+k = 12
 k_means = KMeans(n_clusters=k)
 k_means.fit(X)
 
@@ -42,7 +42,7 @@ cluster_centers = k_means.cluster_centers_
 clusters_dict = {}
 clusters_reference_dict = {}
 
-with open('cities_9_clusters.json', 'w') as outfile:
+with open('cities_p_clusters.json', 'w') as outfile:
     outfile.write('{')
     cnt = 0
     for center in cluster_centers:
@@ -56,7 +56,7 @@ with open('cities_9_clusters.json', 'w') as outfile:
 for key in read_data:
     clusters_reference_dict[k_means.predict([read_data[key]])[0]].append(key)
 
-with open('cities_9_clusters_reference.json', 'w') as outfile:
+with open('cities_p_clusters_reference.json', 'w') as outfile:
     outfile.write(json.dumps(clusters_reference_dict))
 outfile.close()
 

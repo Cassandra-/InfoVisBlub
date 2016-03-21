@@ -7,8 +7,7 @@ xhttp.send();
 xhttp.onreadystatechange = function() {
 	if (xhttp.readyState == 4 && xhttp.status == 200) {
 		document.getElementById("sector_list").innerHTML = xhttp.responseText;
-		document.getElementById("waitC").style.display="none";
-		document.getElementById("waitC").style.cursor="";
+		stop_wait("waitC");
 	}
 }
 
