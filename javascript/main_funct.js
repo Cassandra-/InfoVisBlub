@@ -39,7 +39,7 @@ function stop_wait(ids) {
 		
 
 function change_sector(name,bool,t) {
-	start_wait(["waitC","waitM","waitS"]);
+	start_wait(["waitC","waitM","waitS","waitF"]);
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", host + "/list1/select/"+name+"/"+bool+"/"+t, true);
 	xhttp.send();

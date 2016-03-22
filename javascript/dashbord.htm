@@ -41,6 +41,12 @@
 				</div>
 				<div class="disp_window" >
 					<div id="waitF" class="waiter">Loading...</div>
+					<div id="in-out-but">
+						<table>
+							<tr><td><input type="checkbox" checked="true" onclick="show_from = !show_from; hide_lines();"></td><td>from</td></tr>
+							<tr><td><input type="checkbox" checked="true" onclick="show_to = !show_to; hide_lines();"></td><td>to</td></tr>
+						</table>
+					</div>
 					<div id="flowmap"></div>
 				</div>
 			</div>

@@ -1,12 +1,3 @@
-// Create the Google Map
-var map = new google.maps.Map(d3.select("#map").node(), {
-  zoom: 8,
-  center: new google.maps.LatLng(52.3, 5.3),
-  mapTypeId: google.maps.MapTypeId.TERRAIN,
-  minZoom: 7,
-  maxZoom: 13
-});
-
 function map_init() {
 	start_wait(["waitM"]);
 	var xhttp = new XMLHttpRequest();
@@ -15,13 +6,14 @@ function map_init() {
 	xhttp.onreadystatechange = function(){
 		if (xhttp.readyState == 4 && xhttp.status == 200) {
 			var data = JSON.parse(xhttp.responseText);
-			update_map(data);
+			update_map(data,overlayM);
+			update_map(data,overlayF);
 			stop_wait(["waitM"]);
 		}
 	}
 }
 
-function update_map(data) {
+function update_map(data,overlay) {
 	var layer = d3.select(overlay.getPanes().overlayMouseTarget).select("div.stations");
 	layer.selectAll(".marker").remove();
 	
@@ -62,25 +54,39 @@ function update_map(data) {
 		.style("left", (dl.x - d.value.rad-1) + "px")
 		.style("top", (dl.y - d.value.rad-1) + "px");
 	}
+	
+	if (overlay == overlayF) {
+		flow_zoom();
+		draw_lines(data);
+	}
 };
 
 
-var overlay = new google.maps.OverlayView();
+// Create the Google Map
+var map = new google.maps.Map(d3.select("#map").node(), {
+  zoom: 8,
+  center: new google.maps.LatLng(52.3, 5.3),
+  mapTypeId: google.maps.MapTypeId.TERRAIN,
+  minZoom: 7,
+  maxZoom: 13
+});
+
+var overlayM = new google.maps.OverlayView();
 // Add the container when the overlay is added to the map.
-overlay.onAdd = function() {
+overlayM.onAdd = function() {
 	var layer = d3.select(this.getPanes().overlayMouseTarget).append("div")
 		.attr("class", "stations");
 	// Bind our overlay to the map…
 	this.draw = map_init;
 };
-overlay.setMap(map);
+overlayM.setMap(map);
 
 map.addListener('zoom_changed', map_init);
 
 
 
 function update_regions(special,id) {
-	start_wait(["waitM","waitS"]);
+	start_wait(["waitM","waitS","waitF"]);
 	var xhttp = new XMLHttpRequest();
 	if (special) {
 		xhttp.open("GET", host + "/regions/"+special+"/"+id+"/"+map.zoom, true);
@@ -91,7 +97,8 @@ function update_regions(special,id) {
 	xhttp.onreadystatechange = function(){
 		if (xhttp.readyState == 4 && xhttp.status == 200) {
 			var data = JSON.parse(xhttp.responseText);
-			update_map(data);
+			update_map(data,overlayM);
+			update_map(data,overlayF);
 			sankey_update();
 			stop_wait(["waitM"]);
 		}

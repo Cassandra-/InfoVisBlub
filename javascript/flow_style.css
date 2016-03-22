@@ -5,6 +5,14 @@
   padding: 0;
 }
 
+#in-out-but {
+	position:absolute;
+	z-index:1000;
+	width:60px;
+	height:46px;
+	background-color: #eee;
+}
+
 /*.stations, .stations svg {
   position: absolute;
 }

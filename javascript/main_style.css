@@ -1,17 +1,17 @@
 #main {
-	width: 100vw;
-	height:100vh;
+	width: 97vw;
+	height:97vh;
 }
 
 #leftpanel {
 	float: left;
 	width: 18vw;
-	height: 100vh;
+	height: 97vh;
 }
 #mainpanel {
 	float: right;
 	width: 79vw;
-	height: 100vh;
+	height: 97vh;
 }
 
 .cat_list {

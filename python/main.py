@@ -324,12 +324,40 @@ def map_update(zoom):
 				m = v['rad']
 		for k,v in obj.items():
 			v['rad'] = int(v['rad'] / m * 10 + 0.5)
+			
+	linker(obj)
 	
 	if curzoom != zoom:
 		for k,v in obj.items():
 			v['rad'] *= 2
 	
 	return jsonfy(obj)
+
+def linker(obj):
+	for k,v in obj.items():
+		if v['selected'] == 'true':
+			if 'brinnr' in v:
+				t1 = t2 = 'brinnr'
+			else:
+				t1,t2 = 'gemeente','name'
+			v['to_link'] = []
+			v['from_link'] = []
+			for k2,v2 in obj.items():
+				if 'brinnr' in v2:
+					t3 = t4 = 'brinnr'
+				else:
+					t3,t4 = 'gemeente','name'
+				from_q = {'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, ('f'+t1):v[t2], ('t'+t3):v2[t4] }
+				to_q = {'tsector':list(tprofiel_keys), 'fsector':list(fprofiel_keys), 'year':years, ('t'+t1):v[t2], ('f'+t3):v2[t4] }
+				from_n = len( DATA(**from_q) );
+				to_n = len( DATA(**to_q) );
+				if from_n > 0 and v2['selected'] == 'false':
+					v['from_link'].append({'id':k2, 'n':from_n})
+				if to_n > 0:
+					if v2['selected'] == 'true':
+						v['to_link'].append({'id':k2, 'n':to_n, 'col':'black'})
+					else:
+						v['to_link'].append({'id':k2, 'n':to_n})
 
 def zoomer(zoom):
 	if zoom == '9':
