@@ -100,6 +100,7 @@ function update_regions(special,id) {
 			update_map(data,overlayM);
 			update_map(data,overlayF);
 			sankey_update();
+            info_update()
 			stop_wait(["waitM"]);
 		}
 	}

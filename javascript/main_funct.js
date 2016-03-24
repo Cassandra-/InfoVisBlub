@@ -13,6 +13,7 @@ xhttp.onreadystatechange = function() {
 
 function sankey_update() {}
 function map_init() {}
+function info_update() {}
 
 function start_wait(ids) {
 	if (typeof(ids) == "string") {
@@ -49,6 +50,7 @@ function change_sector(name,bool,t) {
 			//animate_table()
 			sankey_update();
 			map_init();
+            info_update();
 			stop_wait(["waitC"]);
 		}
 	}
@@ -90,6 +92,7 @@ range.noUiSlider.on('update', function( values, handle ) {
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4 && xhttp.status == 200) {
 			sankey_update();
+            info_update();
 			map_init();
 		}
 	}

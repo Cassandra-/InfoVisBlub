@@ -8,6 +8,7 @@ from flask import Flask, Response
 import os
 import random
 import json
+import csv
 
 RESOURCES = ['./javascript','./javascript/utils','./Flow','./Geomap', './Geomap/Flow']
 
@@ -395,6 +396,41 @@ def get(keys,args=[],kwargs={}):
 			ans.append((i1,i2,n))
 	return ans
 
+list_reg=[]
+list_inv=[]
+
+def read_jona():
+    with open('./python/investigeren.csv', 'rb') as invest:
+        inv=csv.reader(invest, delimiter=';')
+        for row in inv:
+            list_inv.append(row)
+    with open ('./python/regionale.csv', 'rb') as regionale:
+        reg=csv.reader(regionale, delimiter=';')
+        for row in reg:
+            list_reg.append(row)
+
+def cities(regions):
+    province=None
+    if regions == 'Netherlands':
+        province = 'Nederland'
+
+    for i in range(0,len(regions)-1):
+        a = str(regions[i].decode('utf8')).lower()
+        for j in range(0,len(list_reg)-1):
+            b = str(list_reg[j][0]).lower()
+            if a == b:
+                province = str(list_reg[j][2])
+                break
+        if province:
+            break
+    
+    if province is None:
+        return None
+
+    for i in range(0,len(list_inv)-1):
+        if str(list_inv[i][0]) == province:
+            return list_inv[i+2], list_inv[i+3], list_inv[i+4], list_inv[i+1]
+
 @app.route('/sankey/update')
 def sankey_update():
 	colors = ['#500','#050','#005','#550','#055','#505','#555']
@@ -417,7 +453,35 @@ def sankey_update():
 				reg = region_data[region[0]][region[1]]['name']
 				links += [{"source":s,"target":t,"value":v, "color":colors[i%len(colors)], "region":reg} for s,t,v in get(types, \
 								[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':reg})]
-	obj = {"nodes": [{"name":i} for i in types], "links": links }
+        obj = {"nodes": [{"name":i} for i in types], "links": links }
+	print(links)
+	return jsonfy(obj)
+
+@app.route('/info/update')
+def info_update():
+	types = list(DATA.allkeys('type') )
+	tprofiles = list(tprofiel_keys)
+	fprofiles = list(fprofiel_keys)
+	links = []
+	if len(regions) < 1:
+            links += [{"source":s,"inv":[], "target":t,"tsector":tprofiles,"value":v, "years": years,"region":"Netherlands"} for s,t,v in get(types, \
+						[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years})]
+	else:
+		for i,region in enumerate(regions):
+			if 'brinnr' in region_data[region[0]][region[1]]:
+				sname = region_data[region[0]][region[1]]['name']
+				brinnr = region_data[region[0]][region[1]]['brinnr']
+				print(sname,brinnr,len(DATA(brin_nr=brinnr)))
+				links += [{"source":s,"target":t,"years": years,"tsector":tprofiles,"value":v, "region":sname} for s,t,v in get(types, \
+								[],{'tsector':tprofiles,'fsector':fprofiles,'year':years,'brin_nr':brinnr})]
+			else:
+				reg = region_data[region[0]][region[1]]['name']
+                                links += [{"source":s,"inv":[],"target":t,"value":v, "years": years,"tsector":tprofiles,"region":reg} for s,t,v in get(types, \
+								[],{'tsector':tprofiles, 'fsector':fprofiles, 'year':years, 'gemeente':reg})]
+        for i in range(0,len(links)):
+            inv=cities(links[i]['region'])
+            links[i]['inv'] = inv
+        obj = {"nodes": [{"name":i} for i in types], "links": links}
 	print(obj)
 	return jsonfy(obj)
 
@@ -452,10 +516,11 @@ def region_init():
 
 def main(size=0,studcount=False):
 	init()
+        read_jona()
 	t1 = time()
 	global DATA, tprofiel_keys, fprofiel_keys, years, regions, region_data, STUDCOUNT
 	STUDCOUNT = studcount;
-	DATA = build_database(size)
+	DATA = build_database(3)
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
 	
