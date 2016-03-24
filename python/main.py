@@ -223,7 +223,7 @@ def set_years(begin,end):
 
 @app.route('/list1/build')
 def list1_build():
-	out = "<table>\n<tr><td><i> f</i></td><td><i> t</i></td><td><i>name</i></td></tr></i>"
+	out = "<table>\n<tr><td><i>from</i></td><td><i>to</i></td><td><i>name</i></td></tr></i>"
 	tot = []
 	idn=0
 	for key in list(DATA.allkeys('sector') ):

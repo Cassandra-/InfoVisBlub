@@ -19,7 +19,7 @@ overlayF.setMap(flowmap);
 var rect = document.getElementById('flowmap').getBoundingClientRect();
 var inout = document.getElementById('in-out-but');
 inout.style.top = rect.top+5+"px";
-inout.style.left = rect.right-65+"px";1
+inout.style.left = rect.right-95+"px";1
 
 show_from = true;
 show_to = true;
@@ -90,7 +90,7 @@ function draw_lines(data) {
 				if ('col' in line) {
 					put_line(from_coords,to_coords,line['n'],'black',data[line['id']]['name']);
 				} else {
-					put_line(from_coords,to_coords,line['n'],'red',data[line['id']]['name']);
+					put_line(from_coords,to_coords,line['n'],'green',data[line['id']]['name']);
 				}
 			}
 		}
@@ -98,7 +98,7 @@ function draw_lines(data) {
 			for (var j in point['from_link']) {
 				var line = point['from_link'][j];
 				to_coords = data[line['id']].loc;
-				put_line(to_coords,from_coords,line['n'],'green',data[line['id']]['name']);
+				put_line(to_coords,from_coords,line['n'],'red',data[line['id']]['name']);
 			}
 		}
 	}
@@ -109,13 +109,13 @@ function draw_lines(data) {
 function hide_lines() {
 	for (var i in lines) {
 		var line = lines[i];
-		if (line.strokeColor == 'red') {
+		if (line.strokeColor == 'green') {
 			if (show_to) {
 				line.setMap(flowmap);
 			} else {
 				line.setMap(null);
 			}
-		} else if (line.strokeColor == 'green') {
+		} else if (line.strokeColor == 'red') {
 			if (show_from) {
 				line.setMap(flowmap);
 			} else {
@@ -140,7 +140,7 @@ function put_line(from_coords,to_coords,size,col,name) {
 			title: ""+size+" students"
 		});
 	
-	if (col == 'green') {
+	if (col == 'red') {
 		var coo = {lat:to_coords[0], lng:to_coords[1]};
 		var cont = ("<b>"+size+" students left for: "+name+"</b>").replace(/,/g, ', ');
 	} else {
