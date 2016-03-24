@@ -1,6 +1,5 @@
 function show_info(data)
 {
-    
 	var width = document.getElementById("chart").clientWidth,
 	    height = document.getElementById("chart").clientHeight;
     var htm = '<div style="overflow: auto; position: relative; width: '+width+'px; height: '+height+'px;"';
@@ -16,34 +15,38 @@ function show_info(data)
         }
         if (validate==0){
             city.push(inv[0][0]);
-            htm += '<b><u> Region: '+inv[0][0] + '</u></b>';
+            htm += '<b><u> Omgeving: '+ inv[0][0] + '</u></b>'
+            htm += '<br>Investering in Euros<br>';
         for(k=0; k<inv.length; k++){
         htm += '<p>';
 
-        if (inv[k][1] == '2010'){
-            htm += '<i><b>Year: 2014</i></b> -- ';}
-        else if(inv[k][1]=='2013*')
-        {   htm += '<i><b>Year: 2013 </i></b>-- '
+        //if (inv[k][1] == '2010'){
+        //   htm += '<i><b>Year: 2014</i></b> -- ';}
+        if(inv[k][1] == '2011')
+        {
+        //else if(inv[k][1]=='2013*')
+        //{   htm += '<i><b>Year: 2013 </i></b>-- '
+        //}
+        //else {
+                htm += '<i><b>Jaar: ' + inv[k][1] + '</i></b> <br>';
+        
+                htm += '<u>Bedrijfsgebouwen:</u> '+inv[k][3]+' mln <br> ';
+                htm += '<u>Grond-weg- en waterbouwkundige werken:</u> '+inv[k][4]+'mln <br> ';
+                htm += '<u>Vervoermiddelen:</u> '+inv[k][5]+' mln <br> ';
+                htm += '<u>Machines en installaties:</u> '+inv[k][6]+' mln <br> ';
+                htm += '<u>In cultuur gebrachte activa:</u> '+inv[k][7]+' mln <br> ';
+                htm += '<u>Overdrachtskosten op grond:</u> '+inv[k][8]+' mln <br> ';
+                htm += '<u>Computerprogrammatuur en databanken:</u> '+inv[k][9]+' mln <br> ';
+                htm += '<u>Onderzoek en ontwikkeling:</u> '+inv[k][10]+' mln <br> ';
+                htm += '<u>Overige investeringen:</u> '+inv[k][11]+' mln <br> ';
         }
-        else {
-            htm += '<i><b>Year: ' + inv[k][1] + '</i></b> --';
         }
-        htm += 'Bedrijfsgebouwen: '+inv[k][3]+'mln Euro / ';
-        htm += 'Grond-weg- en waterbouwkundige werken: '+inv[k][4]+'mln Euro / ';
-        htm += 'Vervoermiddelen: '+inv[k][5]+'mln Euro / ';
-        htm += 'Machines en installaties: '+inv[k][6]+'mln Euro / ';
-        htm += 'In cultuur gebrachte activa: '+inv[k][7]+'mln Euro / ';
-        htm += 'Overdrachtskosten op grond: '+inv[k][8]+'mln Euro / ';
-        htm += 'Computerprogrammatuur en databanken: '+inv[k][9]+'mln Euro / ';
-        htm += 'Onderzoek en ontwikkeling: '+inv[k][10]+'mln Euro / ';
-        htm += 'Overige investeringen: '+inv[k][11]+'mln Euro / ';
-    }
             }
         
 
         to = data.links[j]['target'];
         from = data.links[j]['source'];
-        htm += '<br> <i>Nr of students from ';
+        htm += '<br> <i>Aantal studenten van ';
         htm += data.nodes[from]['name'] + ' ->'+ data.nodes[to]['name'] + '</i>: ' +data.links[j]['value'];
     
 
@@ -56,7 +59,7 @@ function show_info(data)
 
 
 function info_update() {
-	start_wait(["waitS"]);
+	start_wait(["waitI"]);
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", host + "/info/update", true)
 	xhttp.send();
@@ -64,7 +67,7 @@ function info_update() {
 		if (xhttp.readyState == 4 && xhttp.status == 200) {
 			var data = JSON.parse(xhttp.responseText);
 			show_info(data);
-			stop_wait(["waitS"]);
+			stop_wait(["waitI"]);
 		}
 	}
 }

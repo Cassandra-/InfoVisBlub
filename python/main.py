@@ -520,7 +520,7 @@ def main(size=0,studcount=False):
 	t1 = time()
 	global DATA, tprofiel_keys, fprofiel_keys, years, regions, region_data, STUDCOUNT
 	STUDCOUNT = studcount;
-	DATA = build_database(3)
+	DATA = build_database(size)
 	t1 = time() - t1
 	writenow('\n','loaded in',t1,'seconds. Total of',len(DATA),'students\n')
 	
